@@ -37,8 +37,12 @@ def stack_csv_files(csv_dir) -> pd.DataFrame:
     df = pd.DataFrame()
     for file in csv_files:
         df_file = pd.read_csv(os.path.join(csv_dir, file))
-        df_file['sample_id'] = file[:-4]
-        df = pd.concat([df, df_file], ignore_index=True)
+        #check if the column exists
+        if 'sampleid' in df_file.columns:
+            df = pd.concat([df, df_file], ignore_index=True)
+        else:
+            df_file['sampleid'] = file[:-4]
+            df = pd.concat([df, df_file], ignore_index=True)
     return df
 
 def main(args):
